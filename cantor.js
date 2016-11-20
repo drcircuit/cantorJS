@@ -1,4 +1,8 @@
 function createScreen(name, width, height) {
+    var canvases = document.getElementsByTagName('canvas');
+    for(var idx = 0; idx < canvases.length;idx++){
+        document.body.removeChild(canvases[idx]);
+    }
     var scr    = document.createElement('canvas');
     scr.id     = name;
     scr.width  = width;
@@ -34,14 +38,18 @@ function draw(c, screen, height) {
     }
 }
 function main() {
-    var scr    = createScreen('screen', window.innerWidth, window.innerHeight);
-    var margin = 10;
+    var size = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
+    var scr    = createScreen('screen', size, size);
+    var margin = scr.width * 0.012;
 
     var iterations = 15;
     var c          = {width: scr.width - margin * 2, startX: margin, y: margin * 2, margin: margin*7};
     for (var i = 0; i < iterations; ++i) {
         cantor(c);
     }
-    draw(c, scr.ctx,50);
+    draw(c, scr.ctx,scr.height * 0.060);
 }
 main();
+window.addEventListener('resize', function () {
+    main();
+});
